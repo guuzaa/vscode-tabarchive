@@ -246,3 +246,41 @@ export const archiveTabs = (maxTabAgeInHours = 0) => {
 			});
 	});
 };
+
+export const closeAllDiffTabs = () => {
+	lg("Closing all diff tabs...");
+
+	let closedCount = 0;
+
+	// Create a promise that will resolve after the operation completes
+	const closeTabsPromise = new Promise<number>((resolve) => {
+		vscode.window.tabGroups.all.forEach((tabGroup) => {
+			tabGroup.tabs.forEach((tab) => {
+				// Check if this is a diff editor tab
+				if (tab.input instanceof vscode.TabInputTextDiff) {
+					vscode.window.tabGroups.close(tab);
+					closedCount++;
+				}
+			});
+		});
+		resolve(closedCount);
+	});
+
+	// Create a timeout promise
+	const timeoutPromise = new Promise<number>((_, reject) => {
+		setTimeout(() => reject(new Error("Operation timed out")), 5000); // 5 second timeout
+	});
+
+	// Race the promises
+	Promise.race([closeTabsPromise, timeoutPromise])
+		.then((count) => {
+			if (count > 0) {
+				vscode.window.showInformationMessage(`Closed ${count} diff tab${count === 1 ? '' : 's'}.`);
+			} else {
+				vscode.window.showInformationMessage('No diff tabs found to close.');
+			}
+		})
+		.catch((error) => {
+			vscode.window.showErrorMessage(`Failed to close diff tabs: ${error.message}`);
+		});
+};
