@@ -81,6 +81,10 @@
 			{
 				"command": "tabarchive.listArchivedTabs",
 				"title": "Tab Archive: List recently archived tabs"
+			},
+			{
+				"command": "tabarchive.closeAllDiffTabs",
+				"title": "Tab Archive: Close all diff tabs"
 			}
 		],
 		"menus": {
