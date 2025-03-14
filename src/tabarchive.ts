@@ -3,6 +3,7 @@ import { INTERVAL_IN_MINUTES, lg } from "./common";
 import { getSettingValue } from "./settings";
 
 const TAB_TIME_COUNTERS_STORAGE_KEY = "tabTimeCounters";
+const ARCHIVED_TABS_STORAGE_KEY = "archivedTabs";
 
 interface TabTimeCounters {
 	[tabGroupId: number]: {
@@ -130,12 +131,34 @@ export const createTabTimeCounters = (context: vscode.ExtensionContext) => {
 
 	lg("tabTimeCounters");
 	lg(tabTimeCounters);
+};
 
-	archivedTabs.clear();
+export const loadArchivedTabs = (context: vscode.ExtensionContext) => {
+	// Get stored archived tabs or empty object if none exists
+	const storedArchivedTabs: [string, ArchivedTabInfo][] =
+		context.workspaceState.get(ARCHIVED_TABS_STORAGE_KEY) || [];
+
+	// Restore from storage
+	storedArchivedTabs.forEach(([key, info]) => {
+		archivedTabs.set(key, info);
+	});
+
+	lg("archivedTabs loaded");
+	lg(archivedTabs.size);
 };
 
 export const storeTabTimeCounters = (context: vscode.ExtensionContext) =>
 	context.workspaceState.update(TAB_TIME_COUNTERS_STORAGE_KEY, tabTimeCounters);
+
+export const storeArchivedTabs = (context: vscode.ExtensionContext) => {
+	lg("Storing archived tabs...");
+
+	// Convert Map to array of entries for storage
+	const archivedTabsArray = Array.from(archivedTabs.entries());
+
+	// Store in workspace state
+	return context.workspaceState.update(ARCHIVED_TABS_STORAGE_KEY, archivedTabsArray);
+};
 
 export const listArchivedTabs = async () => {
 	const items = Array.from(archivedTabs.values()).map(({ group, label, uri }) => ({
