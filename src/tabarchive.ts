@@ -175,32 +175,74 @@ export const clearArchivedTabs = async (context: vscode.ExtensionContext) => {
 	}
 };
 
-export const listArchivedTabs = async () => {
+export const listArchivedTabs = async (context: vscode.ExtensionContext) => {
 	const items = Array.from(archivedTabs.values()).map(({ group, label, uri }) => ({
-		description: `Group: ${group}`,
-		detail: vscode.workspace.asRelativePath(uri.replace("file://", "")),
+		description: `Group: ${group} - ${vscode.workspace.asRelativePath(vscode.Uri.parse(uri)).replace(`/${label}`, "")}`,
 		group,
 		iconPath: new vscode.ThemeIcon("file"),
 		label,
 		uri,
+		buttons: [
+			{
+				iconPath: new vscode.ThemeIcon("close"),
+				tooltip: "Remove from archived tabs"
+			}
+		]
 	}));
 
-	const selectedItem = await vscode.window.showQuickPick(items, {
-		placeHolder: 'Archived tabs since this workspace was opened',
-		matchOnDescription: true,
-		matchOnDetail: true,
+	const quickPick = vscode.window.createQuickPick();
+	quickPick.items = items;
+	quickPick.placeholder = 'Archived tabs since this workspace was opened';
+	quickPick.matchOnDescription = true;
+	quickPick.matchOnDetail = true;
+
+	let selectedItem: typeof items[0] | undefined;
+
+	quickPick.onDidTriggerItemButton(async ({ item }) => {
+		const tabItem = item as typeof items[0];
+		const key = createTabKey(tabItem.group, tabItem.label, tabItem.uri);
+		archivedTabs.delete(key);
+
+		// Update the workspace state
+		storeArchivedTabs(context);
+
+		// Update the quick pick items
+		quickPick.items = quickPick.items.filter(i => i !== item);
+
+		if (quickPick.items.length === 0) {
+			quickPick.placeholder = 'No archived tabs remaining';
+		}
 	});
 
-	if (selectedItem && selectedItem.uri) {
-		try {
-			const document = await vscode.workspace.openTextDocument(vscode.Uri.parse(selectedItem.uri));
-			await vscode.window.showTextDocument(document);
-		} catch (error) {
-			const key = createTabKey(selectedItem.group, selectedItem.label, selectedItem.uri);
-			archivedTabs.delete(key);
-			vscode.window.showErrorMessage(`Failed to open file: ${error instanceof Error ? error.message : String(error)}`);
+	quickPick.onDidAccept(() => {
+		selectedItem = quickPick.selectedItems[0] as typeof items[0];
+		quickPick.hide();
+	});
+
+	quickPick.onDidHide(() => {
+		quickPick.dispose();
+		if (selectedItem && selectedItem.uri) {
+			try {
+				vscode.workspace.openTextDocument(vscode.Uri.parse(selectedItem.uri))
+					.then(document => vscode.window.showTextDocument(document))
+					.then(undefined, (error: unknown) => {
+						if (selectedItem && selectedItem.group && selectedItem.label && selectedItem.uri) {
+							const key = createTabKey(selectedItem.group, selectedItem.label, selectedItem.uri);
+							archivedTabs.delete(key);
+							storeArchivedTabs(context);
+						}
+						vscode.window.showErrorMessage(`Failed to open file: ${error instanceof Error ? error.message : String(error)}`);
+					});
+			} catch (error) {
+				const key = createTabKey(selectedItem.group, selectedItem.label, selectedItem.uri);
+				archivedTabs.delete(key);
+				storeArchivedTabs(context);
+				vscode.window.showErrorMessage(`Failed to open file: ${error instanceof Error ? error.message : String(error)}`);
+			}
 		}
-	}
+	});
+
+	quickPick.show();
 };
 
 export const archiveTabs = (maxTabAgeInHours = 0) => {
