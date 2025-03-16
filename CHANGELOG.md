@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.0.3
+
+1. Add `Remove any single one archived tab` support
+2. Tidy each archived tab's description
+
 ### 1.0.2
 
 1. Add 'Clear archived tabs' command;
