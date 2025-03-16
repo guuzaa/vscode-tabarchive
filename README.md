@@ -20,6 +20,10 @@ Archive all tabs except the 5 (by default) most recently used ones, in each grou
 
 List the tabs that have been automatically archived since the workspace was opened. Use it to adjust the `tabarchive.numberOfTabsInGroup` and `tabarchive.tabAgeForAutomaticArchiving` settings if you find that tabs are archived more/less often than you wish.
 
+### `Tab Archive: Clear archived tabs`
+
+Clear all archived tabs from memory and storage. This is useful when you want to start fresh and remove all previously archived tabs.
+
 ### `Tab Archive: Close all diff tabs`
 
 Close all diff tabs in all tab groups. This is useful when you want to quickly clean up after reviewing multiple file changes.
