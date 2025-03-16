@@ -3,12 +3,15 @@ import { INTERVAL_IN_MINUTES, lg } from "./common";
 import { getSettingValue, updateSettingValue } from "./settings";
 import {
 	archiveTabs,
+	clearArchivedTabs,
 	closeAllDiffTabs,
 	createTabTimeCounters,
 	incrementTabTimeCounter,
 	listArchivedTabs,
+	loadArchivedTabs,
 	removeTabTimeCounter,
 	resetTabTimeCounter,
+	storeArchivedTabs,
 	storeTabTimeCounters,
 } from "./tabarchive";
 
@@ -127,6 +130,13 @@ const registerCommands = (context: vscode.ExtensionContext) => {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand(
+			"tabarchive.clearArchivedTabs",
+			() => clearArchivedTabs(context),
+		),
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand(
 			"tabarchive.closeAllDiffTabs",
 			() => closeAllDiffTabs(),
 		),
@@ -172,6 +182,7 @@ export function activate(context: vscode.ExtensionContext) {
 	registerCommands(context);
 	setActiveInWorkspaceState();
 	createTabTimeCounters(context);
+	loadArchivedTabs(context);
 
 	context.subscriptions.push(
 		vscode.workspace.onDidChangeConfiguration(({ affectsConfiguration }) => {
@@ -199,6 +210,7 @@ export function activate(context: vscode.ExtensionContext) {
 			);
 
 			storeTabTimeCounters(context);
+			storeArchivedTabs(context);
 
 			if (isActiveInWorkspace()) {
 				archiveTabs(getSettingValue("tabarchive.tabAgeForAutomaticArchiving"));
