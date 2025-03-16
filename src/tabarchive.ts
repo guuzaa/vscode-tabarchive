@@ -163,7 +163,7 @@ export const storeArchivedTabs = (context: vscode.ExtensionContext) => {
 export const listArchivedTabs = async () => {
 	const items = Array.from(archivedTabs.values()).map(({ group, label, uri }) => ({
 		description: `Group: ${group}`,
-		detail: uri,
+		detail: vscode.workspace.asRelativePath(uri.replace("file://", "")),
 		group,
 		iconPath: new vscode.ThemeIcon("file"),
 		label,
