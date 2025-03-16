@@ -124,7 +124,7 @@ const registerCommands = (context: vscode.ExtensionContext) => {
 	context.subscriptions.push(
 		vscode.commands.registerCommand(
 			"tabarchive.listArchivedTabs",
-			() => listArchivedTabs(),
+			() => listArchivedTabs(context),
 		),
 	);
 
