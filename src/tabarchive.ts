@@ -160,6 +160,21 @@ export const storeArchivedTabs = (context: vscode.ExtensionContext) => {
 	return context.workspaceState.update(ARCHIVED_TABS_STORAGE_KEY, archivedTabsArray);
 };
 
+export const clearArchivedTabs = async (context: vscode.ExtensionContext) => {
+	lg("Clearing all archived tabs...");
+
+	// Clear the Map in memory
+	archivedTabs.clear();
+
+	// Clear from workspace state
+	try {
+		await context.workspaceState.update(ARCHIVED_TABS_STORAGE_KEY, []);
+		vscode.window.showInformationMessage("All archived tabs have been cleared.");
+	} catch (error: unknown) {
+		vscode.window.showErrorMessage(`Failed to clear archived tabs: ${error instanceof Error ? error.message : String(error)}`);
+	}
+};
+
 export const listArchivedTabs = async () => {
 	const items = Array.from(archivedTabs.values()).map(({ group, label, uri }) => ({
 		description: `Group: ${group}`,

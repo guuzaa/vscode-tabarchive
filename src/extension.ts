@@ -3,6 +3,7 @@ import { INTERVAL_IN_MINUTES, lg } from "./common";
 import { getSettingValue, updateSettingValue } from "./settings";
 import {
 	archiveTabs,
+	clearArchivedTabs,
 	closeAllDiffTabs,
 	createTabTimeCounters,
 	incrementTabTimeCounter,
@@ -124,6 +125,13 @@ const registerCommands = (context: vscode.ExtensionContext) => {
 		vscode.commands.registerCommand(
 			"tabarchive.listArchivedTabs",
 			() => listArchivedTabs(),
+		),
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand(
+			"tabarchive.clearArchivedTabs",
+			() => clearArchivedTabs(context),
 		),
 	);
 
