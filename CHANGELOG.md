@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.0.4
+
+Use status bar message for better user experience.
+
 ### 1.0.3
 
 1. Add `Remove any single one archived tab` support
