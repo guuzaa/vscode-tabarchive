@@ -4,6 +4,7 @@ import { getSettingValue } from "./settings";
 
 const TAB_TIME_COUNTERS_STORAGE_KEY = "tabTimeCounters";
 const ARCHIVED_TABS_STORAGE_KEY = "archivedTabs";
+const STATUS_MESSAGE_TIMEOUT_MS = 3000;
 
 interface TabTimeCounters {
 	[tabGroupId: number]: {
@@ -169,7 +170,7 @@ export const clearArchivedTabs = async (context: vscode.ExtensionContext) => {
 	// Clear from workspace state
 	try {
 		await context.workspaceState.update(ARCHIVED_TABS_STORAGE_KEY, []);
-		vscode.window.showInformationMessage("All archived tabs have been cleared.");
+		vscode.window.setStatusBarMessage("All archived tabs have been cleared.", STATUS_MESSAGE_TIMEOUT_MS);
 	} catch (error: unknown) {
 		vscode.window.showErrorMessage(`Failed to clear archived tabs: ${error instanceof Error ? error.message : String(error)}`);
 	}
@@ -332,35 +333,24 @@ export const closeAllDiffTabs = () => {
 
 	let closedCount = 0;
 
-	// Create a promise that will resolve after the operation completes
-	const closeTabsPromise = new Promise<number>((resolve) => {
-		vscode.window.tabGroups.all.forEach((tabGroup) => {
-			tabGroup.tabs.forEach((tab) => {
-				// Check if this is a diff editor tab
-				if (tab.input instanceof vscode.TabInputTextDiff) {
-					vscode.window.tabGroups.close(tab);
-					closedCount++;
-				}
-			});
-		});
-		resolve(closedCount);
-	});
-
-	// Create a timeout promise
-	const timeoutPromise = new Promise<number>((_, reject) => {
-		setTimeout(() => reject(new Error("Operation timed out")), 5000); // 5 second timeout
-	});
-
-	// Race the promises
-	Promise.race([closeTabsPromise, timeoutPromise])
-		.then((count) => {
-			if (count > 0) {
-				vscode.window.showInformationMessage(`Closed ${count} diff tab${count === 1 ? '' : 's'}.`);
-			} else {
-				vscode.window.showInformationMessage('No diff tabs found to close.');
+	// Directly iterate through tab groups and close diff tabs
+	vscode.window.tabGroups.all.forEach((tabGroup) => {
+		tabGroup.tabs.forEach((tab) => {
+			// Check if this is a diff editor tab
+			if (tab.input instanceof vscode.TabInputTextDiff) {
+				vscode.window.tabGroups.close(tab);
+				closedCount++;
 			}
-		})
-		.catch((error) => {
-			vscode.window.showErrorMessage(`Failed to close diff tabs: ${error.message}`);
 		});
+	});
+
+	// Show appropriate message based on result
+	if (closedCount > 0) {
+		vscode.window.setStatusBarMessage(
+			`Closed ${closedCount} diff tab${closedCount === 1 ? '' : 's'}.`,
+			STATUS_MESSAGE_TIMEOUT_MS
+		);
+	} else {
+		vscode.window.setStatusBarMessage('No diff tabs found to close.', STATUS_MESSAGE_TIMEOUT_MS);
+	}
 };
