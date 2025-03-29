@@ -3,7 +3,7 @@
 	"displayName": "Tab Archive",
 	"icon": "logo-220x220.png",
 	"description": "Unused tab archive",
-	"version": "1.0.4",
+	"version": "1.1.0",
 	"publisher": "guza",
 	"repository": "github:guuzaa/vscode-tabarchive",
 	"engines": {
