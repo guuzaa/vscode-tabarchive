@@ -23,6 +23,10 @@ const settings = {
 		minimum: 1,
 		default: 12,
 	},
+	"tabarchive.yoloMode": {
+		type: "boolean",
+		default: false,
+	},
 };
 
 type SettingKey = keyof typeof settings;
@@ -41,8 +45,11 @@ export function getSettingValue(
 	settingKey: "tabarchive.tabAgeForAutomaticArchiving",
 ): number;
 export function getSettingValue(
+	settingKey: "tabarchive.yoloMode",
+): boolean;
+export function getSettingValue(
 	settingKey: SettingKey,
-): string | string[] | number | undefined {
+): string | string[] | number | boolean | undefined {
 	const setting = settings[settingKey];
 	const value = vscode.workspace.getConfiguration().get(settingKey);
 
@@ -66,6 +73,10 @@ export function getSettingValue(
 		}
 
 		return value;
+	}
+
+	if (setting.type === "boolean") {
+		return typeof value === "boolean" ? value : setting.default;
 	}
 }
 

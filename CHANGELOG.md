@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.0
+
+1. Add 'YOLO mode' support, which means unused tabs will be closed without being archived for later retrieval.
+
 ### 1.0.4
 
 Use status bar message for better user experience.

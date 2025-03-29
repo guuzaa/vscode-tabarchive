@@ -40,3 +40,11 @@ The default value is `5`.
 Number of hours after which an unused tab is automatically archived.
 
 The default value is `12`.
+
+### `tabarchive.yoloMode`
+
+When enabled, unused tabs will be closed without being archived for later retrieval. This means you won't be able to access these tabs from the archived tabs list.
+
+The name comes from "You Only Live Once" - reflecting that tabs are permanently closed rather than saved for later access.
+
+The default value is `false`.

@@ -177,6 +177,8 @@ export const clearArchivedTabs = async (context: vscode.ExtensionContext) => {
 };
 
 export const listArchivedTabs = async (context: vscode.ExtensionContext) => {
+	const isYoloMode = getSettingValue("tabarchive.yoloMode");
+
 	const items = Array.from(archivedTabs.values()).map(({ group, label, uri }) => ({
 		description: `Group: ${group} - ${vscode.workspace.asRelativePath(vscode.Uri.parse(uri)).replace(`/${label}`, "")}`,
 		group,
@@ -193,7 +195,9 @@ export const listArchivedTabs = async (context: vscode.ExtensionContext) => {
 
 	const quickPick = vscode.window.createQuickPick();
 	quickPick.items = items;
-	quickPick.placeholder = 'Archived tabs since this workspace was opened';
+	quickPick.placeholder = isYoloMode
+		? 'Come on! You Only Live Once!'
+		: 'Archived tabs since this workspace was opened';
 	quickPick.matchOnDescription = true;
 	quickPick.matchOnDetail = true;
 
@@ -249,6 +253,7 @@ export const listArchivedTabs = async (context: vscode.ExtensionContext) => {
 export const archiveTabs = (maxTabAgeInHours = 0) => {
 	lg("Archiving tabs!");
 
+	const isYoloMode = getSettingValue("tabarchive.yoloMode");
 	vscode.window.tabGroups.all.forEach((tabGroup) => {
 		lg(`Group ${tabGroup.viewColumn}`);
 
@@ -315,13 +320,16 @@ export const archiveTabs = (maxTabAgeInHours = 0) => {
 
 				lg(`Group ${tabGroup.viewColumn} - Archiving tab ${label}`);
 
-				const tabKey = createTabKey(tabGroup.viewColumn.toString(), label, tabUri);
-				archivedTabs.set(tabKey, {
-					date,
-					group: tabGroup.viewColumn.toString(),
-					label,
-					uri: tabUri,
-				});
+				// In YOLO mode, just close the tab without archiving it
+				if (!isYoloMode) {
+					const tabKey = createTabKey(tabGroup.viewColumn.toString(), label, tabUri);
+					archivedTabs.set(tabKey, {
+						date,
+						group: tabGroup.viewColumn.toString(),
+						label,
+						uri: tabUri,
+					});
+				}
 
 				vscode.window.tabGroups.close(tab);
 			});
