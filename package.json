@@ -61,6 +61,11 @@
 						"minimum": 1,
 						"default": 12,
 						"markdownDescription": "Number of hours after which an unused tab is automatically archived."
+					},
+					"tabarchive.yoloMode": {
+						"type": "boolean",
+						"default": false,
+						"markdownDescription": "When enabled, unused tabs will be closed without being archived for later retrieval. You Only Live Once!"
 					}
 				}
 			}
