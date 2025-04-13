@@ -3,7 +3,7 @@
 	"displayName": "Tab Archive",
 	"icon": "logo-220x220.png",
 	"description": "Unused tab archive",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"publisher": "guza",
 	"repository": "github:guuzaa/vscode-tabarchive",
 	"engines": {
@@ -73,7 +73,7 @@
 		"commands": [
 			{
 				"command": "tabarchive.archiveAsManyTabsAsPossible",
-				"title": "Tab Archive: Archive as many tabs as possible"
+				"title": "Tab Archive: Archive As Many Tabs As Possible"
 			},
 			{
 				"command": "tabarchive.activate",
@@ -85,15 +85,19 @@
 			},
 			{
 				"command": "tabarchive.listArchivedTabs",
-				"title": "Tab Archive: List recently archived tabs"
+				"title": "Tab Archive: List Recently Archived Tabs"
 			},
 			{
 				"command": "tabarchive.clearArchivedTabs",
-				"title": "Tab Archive: Clear all archived tabs"
+				"title": "Tab Archive: Clear All Archived Tabs"
 			},
 			{
 				"command": "tabarchive.closeAllDiffTabs",
-				"title": "Tab Archive: Close all diff tabs"
+				"title": "Tab Archive: Close All Diff Tabs"
+			},
+			{
+				"command": "tabarchive.closeAllDeletedFileTabs",
+				"title": "Tab Archive: Close All Deleted File Tabs"
 			}
 		],
 		"menus": {

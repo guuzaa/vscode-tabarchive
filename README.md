@@ -12,21 +12,25 @@ The age of the opened tabs is persisted when the workspace is closed, and resume
 
 In addition to automatically archiving unused tabs, the extension provides the following commands.
 
-### `Tab Archive: Archive as many tabs as possible`
+### `Tab Archive: Archive As Many Tabs As Possible`
 
 Archive all tabs except the 5 (by default) most recently used ones, in each group. (It also doesn't archive tabs with changes, pinned tabs, and the active one.)
 
-### `Tab Archive: List recently archived tabs`
+### `Tab Archive: List Recently Archived Tabs`
 
 List the tabs that have been automatically archived since the workspace was opened. Use it to adjust the `tabarchive.numberOfTabsInGroup` and `tabarchive.tabAgeForAutomaticArchiving` settings if you find that tabs are archived more/less often than you wish.
 
-### `Tab Archive: Clear archived tabs`
+### `Tab Archive: Clear All Archived Tabs`
 
 Clear all archived tabs from memory and storage. This is useful when you want to start fresh and remove all previously archived tabs.
 
-### `Tab Archive: Close all diff tabs`
+### `Tab Archive: Close All Diff Tabs`
 
 Close all diff tabs in all tab groups. This is useful when you want to quickly clean up after reviewing multiple file changes.
+
+### `Tab Archive: Close All Deleted File Tabs`
+
+Close all tabs that reference files that no longer exist on disk. This is useful when you want to clean up tabs for files that have been deleted outside of VS Code.
 
 ## Configuration
 

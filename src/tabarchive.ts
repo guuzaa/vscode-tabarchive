@@ -362,3 +362,48 @@ export const closeAllDiffTabs = () => {
 		vscode.window.setStatusBarMessage('No diff tabs found to close.', STATUS_MESSAGE_TIMEOUT_MS);
 	}
 };
+
+export const closeAllDeletedFileTabs = async () => {
+	lg("Closing all deleted file tabs...");
+
+	let closedCount = 0;
+
+	// Directly iterate through tab groups and close tabs with deleted files
+	for (const tabGroup of vscode.window.tabGroups.all) {
+		for (const tab of tabGroup.tabs) {
+			// Check if this is a text editor tab
+			if (tab.input instanceof vscode.TabInputText) {
+				const uri = tab.input.uri;
+
+				// Skip untitled files
+				if (uri.scheme === 'untitled') {
+					continue;
+				}
+
+				try {
+					// Check if the file exists
+					const stat = await vscode.workspace.fs.stat(uri);
+					if (!stat) {
+						// File doesn't exist, close the tab
+						vscode.window.tabGroups.close(tab);
+						closedCount++;
+					}
+				} catch (error) {
+					// If we can't stat the file, it likely doesn't exist
+					vscode.window.tabGroups.close(tab);
+					closedCount++;
+				}
+			}
+		}
+	}
+
+	// Show appropriate message based on result
+	if (closedCount > 0) {
+		vscode.window.setStatusBarMessage(
+			`Closed ${closedCount} deleted file tab${closedCount === 1 ? '' : 's'}.`,
+			STATUS_MESSAGE_TIMEOUT_MS
+		);
+	} else {
+		vscode.window.setStatusBarMessage('No deleted file tabs found to close.', STATUS_MESSAGE_TIMEOUT_MS);
+	}
+};
