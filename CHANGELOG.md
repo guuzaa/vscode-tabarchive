@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1
+
+1. Add `Close All Deleted File Tabs` command
+2. Rename commands to be more descriptive
+
 ### 1.1.0
 
 1. Add 'YOLO mode' support, which means unused tabs will be closed without being archived for later retrieval.
