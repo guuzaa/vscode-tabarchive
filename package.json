@@ -3,7 +3,7 @@
 	"displayName": "Tab Archive",
 	"icon": "logo-220x220.png",
 	"description": "Unused tab archive",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"publisher": "guza",
 	"repository": "github:guuzaa/vscode-tabarchive",
 	"engines": {
@@ -96,8 +96,8 @@
 				"title": "Tab Archive: Close All Diff Tabs"
 			},
 			{
-				"command": "tabarchive.closeAllDeletedFiles",
-				"title": "Tab Archive: Close All Deleted Files"
+				"command": "tabarchive.closeAllDeletedFileTabs",
+				"title": "Tab Archive: Close All Deleted File Tabs"
 			}
 		],
 		"menus": {

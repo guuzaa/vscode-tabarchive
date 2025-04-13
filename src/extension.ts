@@ -4,7 +4,7 @@ import { getSettingValue, updateSettingValue } from "./settings";
 import {
     archiveTabs,
     clearArchivedTabs,
-    closeAllDeletedFiles,
+    closeAllDeletedFileTabs,
     closeAllDiffTabs,
     createTabTimeCounters,
     incrementTabTimeCounter,
@@ -145,8 +145,8 @@ const registerCommands = (context: vscode.ExtensionContext) => {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand(
-			"tabarchive.closeAllDeletedFiles",
-			() => closeAllDeletedFiles(),
+			"tabarchive.closeAllDeletedFileTabs",
+			() => closeAllDeletedFileTabs(),
 		),
 	);
 };

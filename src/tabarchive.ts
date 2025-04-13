@@ -363,8 +363,8 @@ export const closeAllDiffTabs = () => {
 	}
 };
 
-export const closeAllDeletedFiles = async () => {
-	lg("Closing all deleted files...");
+export const closeAllDeletedFileTabs = async () => {
+	lg("Closing all deleted file tabs...");
 
 	let closedCount = 0;
 
