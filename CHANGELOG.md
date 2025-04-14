@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2
+
+1. Adopt a new logo
+2. Refactor README documentation
+
 ## 1.1.1
 
 1. Add `Close All Deleted File Tabs` command

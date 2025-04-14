@@ -3,7 +3,7 @@
 <img src="./logo-220x220.png" alt="Tab Archive" height="150" width="150">
 </a>
 </p>
-<h1 align="center">Tab Archive 📁</h1>
+<h1 align="center">Tab Archive 🗂️</h1>
 
 - **Automatically archives tabs that have not been used for a defined length of time** — 12 hours, by default.
 
