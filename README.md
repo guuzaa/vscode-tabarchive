@@ -1,6 +1,6 @@
 <br>
 <p align="center">
-<img src="./logo-220x220.png" alt="Tab Archive" height="150" width="150">
+<img src="https://objectstorageapi.ap-southeast-1.run.claw.cloud/mpdmx3sy-images/tab-archive.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=mpdmx3sy%2F20250423%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250423T115011Z&X-Amz-Expires=900&X-Amz-Signature=ed3ea661a180115b9dec4b35e953e17b5a8510b928993ebb7c216dbc0616e61f&X-Amz-SignedHeaders=host&x-id=GetObject" alt="Tab Archive" height="150" width="150">
 </a>
 </p>
 <h1 align="center">Tab Archive 🗂️</h1>
