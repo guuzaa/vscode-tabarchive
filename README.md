@@ -9,7 +9,7 @@
 
 - **Only archives tabs if the group contains more than a defined number of tabs** — 5, by default.
 
-- **Doesn't archive tabs that have changes, tabs that are pinned, and the active tab** of each group.
+- **Doesn't archive tabs that have unsaved changes, tabs that are pinned, and the active tab** of each group.
 
 The age of the opened tabs is persisted when the workspace is closed, and resumes incrementing when the workspace is reopened.
 

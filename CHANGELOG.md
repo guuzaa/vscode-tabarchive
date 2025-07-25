@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.3
+
+1. Adopt a compressed logo to reduce the extension's size
+2. Modify README documentation
+
 ## 1.1.2
 
 1. Adopt a new logo
